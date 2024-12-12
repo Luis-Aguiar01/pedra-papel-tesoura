@@ -41,7 +41,7 @@ class War(battles: Int, player1: String, player2: String) {
         return winner
     }
 
-    private fun hasBattles() = foughtBattle < battle
+    fun hasBattles() = foughtBattle < battle
 }
 
 class NoWarFinishException(msg: String) : Exception(msg)
