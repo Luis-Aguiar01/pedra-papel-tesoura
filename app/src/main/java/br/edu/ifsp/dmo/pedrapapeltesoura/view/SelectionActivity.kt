@@ -1,16 +1,16 @@
-package br.edu.ifsp.dmo.pedrapapeltesoura
+package br.edu.ifsp.dmo.pedrapapeltesoura.view
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
+import br.edu.ifsp.dmo.pedrapapeltesoura.R
 import br.edu.ifsp.dmo.pedrapapeltesoura.databinding.ActivitySelectionBinding
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.Paper
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.Rock
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.Scissors
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.Weapon
-import br.edu.ifsp.dmo.pedrapapeltesoura.view.Constants
 
 class SelectionActivity : AppCompatActivity(), OnClickListener {
 
@@ -31,7 +31,7 @@ class SelectionActivity : AppCompatActivity(), OnClickListener {
 
         actionBar?.hide()
 
-        binding.textviewMessage.text = "$name${getString(R.string.choose_gum)}"
+        binding.textviewMessage.text = "$name ${getString(R.string.choose_gum)}"
 
         binding.buttonPaper.setOnClickListener(this)
         binding.buttonRock.setOnClickListener(this)
@@ -39,11 +39,11 @@ class SelectionActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val weapon = when {
-           v == binding.buttonRock -> Rock
-           v == binding.buttonPaper -> Paper
-           v == binding.buttonScissors -> Scissors
-           else -> null
+        val weapon = when (v) {
+            binding.buttonRock -> Rock
+            binding.buttonPaper -> Paper
+            binding.buttonScissors -> Scissors
+            else -> null
         }
         handleResult(weapon)
     }

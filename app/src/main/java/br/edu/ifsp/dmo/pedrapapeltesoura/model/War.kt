@@ -32,7 +32,7 @@ class War(battles: Int, player1: String, player2: String) {
                     player1Weapon is Paper && player2Weapon is Rock -> opponent1
                     else -> opponent2
                 }
-                winner.recordPoint();
+                winner.recordPoint()
                 foughtBattle += 1
             } else {
                 winner = null

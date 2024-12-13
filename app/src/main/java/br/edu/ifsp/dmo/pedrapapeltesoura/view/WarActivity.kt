@@ -1,21 +1,22 @@
-package br.edu.ifsp.dmo.pedrapapeltesoura
+package br.edu.ifsp.dmo.pedrapapeltesoura.view
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import br.edu.ifsp.dmo.pedrapapeltesoura.R
 import br.edu.ifsp.dmo.pedrapapeltesoura.databinding.ActivityWarBinding
+import br.edu.ifsp.dmo.pedrapapeltesoura.model.Paper
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.Player
+import br.edu.ifsp.dmo.pedrapapeltesoura.model.Rock
+import br.edu.ifsp.dmo.pedrapapeltesoura.model.Scissors
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.War
 import br.edu.ifsp.dmo.pedrapapeltesoura.model.Weapon
-import br.edu.ifsp.dmo.pedrapapeltesoura.view.Constants
+import kotlin.random.Random
 
 class WarActivity : AppCompatActivity() {
 
@@ -38,6 +39,13 @@ class WarActivity : AppCompatActivity() {
 
     private fun battle() {
         val winner: Player?
+
+        if (weaponPlayer1 == null && war.opponent1.name == "Bot") {
+            chooseBot(1)
+        } else if (weaponPlayer2 == null && war.opponent2.name == "Bot") {
+            chooseBot(2)
+        }
+
         if (weaponPlayer1 != null && weaponPlayer2 != null) {
             winner = war.toBattle(weaponPlayer1!!, weaponPlayer2!!)
             if (winner != null) {
@@ -102,15 +110,22 @@ class WarActivity : AppCompatActivity() {
     private fun openBundle() {
         val extras = intent.extras
         if (extras != null) {
-            val p1 = extras.getString(Constants.KEY_PLAYER_1)
-            val p2 = extras.getString(Constants.KEY_PLAYER_2)
+            var p1 = extras.getString(Constants.KEY_PLAYER_1)
+            var p2 = extras.getString(Constants.KEY_PLAYER_2)
+
+            if (p1 != null && p1.isBlank()) {
+                p1 = "Bot"
+            } else if (p2 != null && p2.isBlank()) {
+                p2 = "Bot"
+            }
+
             val number = extras.getInt(Constants.KEY_ROUNDS)
             war = War(number, p1!!, p2!!)
         }
     }
 
     private fun proclaimWinner() {
-        val str = "${war.getWinner().name}${getString(R.string.won_the_match)}"
+        val str = "${war.getWinner().name} ${getString(R.string.won_the_match)}"
         binding.buttonWeapon1.visibility = View.GONE
         binding.buttonWeapon2.visibility = View.GONE
         binding.buttonFight.visibility = View.GONE
@@ -129,6 +144,22 @@ class WarActivity : AppCompatActivity() {
         resultLauncher.launch(mIntent)
     }
 
+    private fun chooseBot(playerNumber: Int) {
+        val randomNumber = Random.nextInt(1, 4)
+        val chosenWeapon = when (randomNumber) {
+            1 -> Rock
+            2 -> Paper
+            3 -> Scissors
+            else -> null
+        }
+
+        if (playerNumber == 1) {
+            weaponPlayer1 = chosenWeapon
+        } else if (playerNumber == 2) {
+            weaponPlayer2 = chosenWeapon
+        }
+    }
+
     private fun updateScoreBoard() {
         binding.textviewScore1.text = "${war.opponent1.points}"
         binding.textviewScore2.text = "${war.opponent2.points}"
@@ -136,11 +167,17 @@ class WarActivity : AppCompatActivity() {
 
     private fun updateUI() {
         val str = "${war.opponent1.name} X ${war.opponent2.name}"
-        actionBar?.setTitle(str)
+        actionBar?.title = str
 
         binding.labelPlayer1.text = war.opponent1.name
         binding.labelPlayer2.text = war.opponent2.name
         updateScoreBoard()
+
+        if (war.opponent1.name == "Bot") {
+            binding.buttonWeapon1.visibility = View.GONE
+        } else if (war.opponent2.name == "Bot") {
+            binding.buttonWeapon2.visibility = View.GONE
+        }
 
         binding.buttonWeapon1.text = "${war.opponent1.name} ${getString(R.string.gum_selection)}"
         binding.buttonWeapon2.text = "${war.opponent2.name} ${getString(R.string.gum_selection)}"

@@ -10,13 +10,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PedraPapelETesoura"
+        android:theme="@style/Theme.Jukenpo"
         tools:targetApi="31">
         <activity
-            android:name=".SelectionActivity"
+            android:name=".view.SelectionActivity"
             android:exported="false" />
         <activity
-            android:name=".WarActivity"
+            android:name=".view.WarActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"

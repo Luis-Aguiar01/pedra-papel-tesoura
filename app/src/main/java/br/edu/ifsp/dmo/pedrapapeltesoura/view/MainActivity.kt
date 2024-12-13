@@ -3,9 +3,9 @@ package br.edu.ifsp.dmo.pedrapapeltesoura.view
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.ifsp.dmo.pedrapapeltesoura.R
-import br.edu.ifsp.dmo.pedrapapeltesoura.WarActivity
 import br.edu.ifsp.dmo.pedrapapeltesoura.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +40,12 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    private fun validatePlayerNames(): Boolean {
+        val player1 = binding.edittextPlayer1.text.toString()
+        val player2 = binding.edittextPlayer2.text.toString()
+        return player1.isNotBlank() || player2.isNotBlank()
+    }
+
     private fun startGame() {
         val battles: Int = when (binding.spinnerBattles.selectedItemPosition) {
             0 -> 1
@@ -47,11 +53,17 @@ class MainActivity : AppCompatActivity() {
             else -> 5
         }
 
-        val mIntent = Intent(this, WarActivity::class.java)
-        mIntent.putExtra(Constants.KEY_PLAYER_1, binding.edittextPlayer1.text.toString())
-        mIntent.putExtra(Constants.KEY_PLAYER_2, binding.edittextPlayer2.text.toString())
-        mIntent.putExtra(Constants.KEY_ROUNDS, battles)
-        startActivity(mIntent)
+        if (validatePlayerNames()) {
+            val mIntent = Intent(this, WarActivity::class.java)
+            mIntent.putExtra(Constants.KEY_PLAYER_1, binding.edittextPlayer1.text.toString())
+            mIntent.putExtra(Constants.KEY_PLAYER_2, binding.edittextPlayer2.text.toString())
+            mIntent.putExtra(Constants.KEY_ROUNDS, battles)
+            startActivity(mIntent)
+        } else {
+            Toast.makeText(
+                this,
+                "Insira, pelo menos, um nome de jogador.",
+                Toast.LENGTH_LONG).show()
+        }
     }
-
 }
