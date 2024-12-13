@@ -129,7 +129,7 @@ class WarActivity : AppCompatActivity() {
         binding.buttonWeapon1.visibility = View.GONE
         binding.buttonWeapon2.visibility = View.GONE
         binding.buttonFight.visibility = View.GONE
-        binding.buttonClose.visibility = View.GONE
+        binding.buttonClose.visibility = View.VISIBLE
         binding.textviewReport.visibility = View.VISIBLE
         binding.textviewReport.text = str
     }
